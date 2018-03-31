@@ -1,7 +1,7 @@
 package io.augmentedrealms.client.controller;
 
 import io.augmentedrealms.client.exception.ApiException;
-import io.augmentedrealms.client.model.EmailRecord;
+import io.augmentedrealms.client.model.in.EmailRecord;
 import io.augmentedrealms.client.service.EmailListService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

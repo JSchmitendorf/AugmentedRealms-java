@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "user")
-public class User implements Model {
+public class User implements DBModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,6 +23,7 @@ public class User implements Model {
 
     private String token;
 
+    @Override
     public Long getId() {
         return id;
     }

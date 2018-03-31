@@ -1,8 +1,9 @@
 package io.augmentedrealms.client.controller;
 
 import io.augmentedrealms.client.exception.ApiException;
-import io.augmentedrealms.client.model.RealmCredential;
-import io.augmentedrealms.client.model.RealmRecord;
+import io.augmentedrealms.client.model.in.RealmCredential;
+import io.augmentedrealms.client.model.in.NewRealm;
+import io.augmentedrealms.client.model.out.Realm;
 import io.augmentedrealms.client.service.RealmService;
 import io.augmentedrealms.client.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -24,23 +25,8 @@ public class RealmController {
     }
 
     @PostMapping(path = "/create")
-    public RealmRecord createRealm(@Valid @RequestBody RealmRecord realm) throws ApiException {
-        return realmService.createRealm(realm,userService.getUserFromHeader());
+    public Realm createRealm(@Valid @RequestBody NewRealm realm) throws ApiException {
+        return Realm.getInstance(realmService.createRealm(realm,userService.getCurrentUserDBModel()));
     }
 
-    @PostMapping(path = "/join")
-    public RealmRecord joinRealm(@Valid @RequestBody RealmCredential realmCredential) throws ApiException {
-        return realmService.joinRealm(realmCredential,userService.getUserFromHeader());
-    }
-
-    @GetMapping
-    public RealmRecord realmSync() throws ApiException {
-        return realmService.realmSync(userService.getUserFromHeader());
-    }
-
-    @GetMapping(path = "/leave")
-    @ResponseStatus(value = HttpStatus.OK)
-    public void leaveRealm() throws ApiException {
-        realmService.leaveRealm(userService.getUserFromHeader());
-    }
 }

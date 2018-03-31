@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="email_list")
-public class EmailListItem implements Model{
+public class EmailListItem implements DBModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -13,6 +13,7 @@ public class EmailListItem implements Model{
     @Column(unique = true,updatable = false)
     private String email;
 
+    @Override
     public Long getId() {
         return id;
     }

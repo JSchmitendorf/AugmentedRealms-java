@@ -5,7 +5,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "realm")
-public class Realm  implements Model {
+public class Realm  implements DBModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,9 +18,7 @@ public class Realm  implements Model {
     @ManyToOne
     private Player owner;
 
-    @OneToMany(mappedBy = "curRealm")
-    private Set<Player> participants;
-
+    @Override
     public Long getId() {
         return id;
     }
@@ -52,14 +50,6 @@ public class Realm  implements Model {
 
     public void setOwner(Player owner) {
         this.owner = owner;
-    }
-
-    public Set<Player> getParticipants() {
-        return participants;
-    }
-
-    public void setParticipants(Set<Player> participants) {
-        this.participants = participants;
     }
 
 

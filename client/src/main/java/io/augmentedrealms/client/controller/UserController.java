@@ -1,7 +1,8 @@
 package io.augmentedrealms.client.controller;
 
 import io.augmentedrealms.client.exception.ApiException;
-import io.augmentedrealms.client.model.UserRecord;
+import io.augmentedrealms.client.model.in.NewUser;
+import io.augmentedrealms.client.model.out.User;
 import io.augmentedrealms.client.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,13 +21,13 @@ public class UserController {
     }
 
     @GetMapping()
-    public UserRecord getUserDetail() throws ApiException {
-        return userService.getUserDetail(userService.getUserFromHeader());
+    public User getUserDetail() throws ApiException {
+        return User.getInstance(userService.getCurrentUserDBModel());
     }
 
     @GetMapping("/logout")
     @ResponseStatus(value = HttpStatus.OK)
     public void logOut() throws ApiException {
-        userService.userLogOut(userService.getUserFromHeader());
+        userService.userLogOut();
     }
 }

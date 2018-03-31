@@ -5,7 +5,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "profile")
-public class Profile implements Model {
+public class Profile implements DBModel {
 
     @Id
     private Long id;
@@ -18,6 +18,7 @@ public class Profile implements Model {
 
     private String username;
 
+    @Override
     public Long getId() {
         return id;
     }

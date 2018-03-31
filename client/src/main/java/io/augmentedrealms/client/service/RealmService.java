@@ -2,9 +2,8 @@ package io.augmentedrealms.client.service;
 
 import io.augmentedrealms.client.exception.ApiException;
 import io.augmentedrealms.client.exception.ApiExceptionResponse;
-import io.augmentedrealms.client.model.RealmCredential;
-import io.augmentedrealms.client.model.RealmRecord;
-import io.augmentedrealms.client.model.factory.RealmRecordFactory;
+import io.augmentedrealms.client.model.in.RealmCredential;
+import io.augmentedrealms.client.model.in.NewRealm;
 import io.augmentedrealms.common.database.model.Realm;
 import io.augmentedrealms.common.database.model.User;
 import io.augmentedrealms.common.database.repository.RealmRepository;
@@ -24,57 +23,26 @@ public class RealmService {
 
     private UserRepository userRepository;
 
-    private RealmRecordFactory realmRecordFactory;
 
 
     public RealmService(PasswordEncoder encoder, RealmRepository realmRepository,
-                        UserRepository userRepository, RealmRecordFactory realmRecordFactory) {
+                        UserRepository userRepository) {
         this.encoder = encoder;
         this.realmRepository = realmRepository;
         this.userRepository = userRepository;
-        this.realmRecordFactory = realmRecordFactory;
     }
 
-    public RealmRecord createRealm(RealmRecord realmRecord,User owner){
+    public Realm createRealm(NewRealm realm, User owner){
 
-        if (realmRecord.getPassword() != null && !realmRecord.getPassword().isEmpty()) {
-            realmRecord.setPassword(encoder.encode(realmRecord.getPassword()));
+        if (realm.getPassword() != null && !realm.getPassword().isEmpty()) {
+            realm.setPassword(encoder.encode(realm.getPassword()));
         }
-        Realm realm = realmRecord.convertTo();
-        realm.setOwner(owner.getPlayer());
-        owner.getPlayer().getOwnedRealms().add(realm);
+        Realm newRealm = realm.convertTo();
+        newRealm.setOwner(owner.getPlayer());
+        owner.getPlayer().getOwnedRealms().add(newRealm);
         userRepository.save(owner);
-        realmRepository.save(realm);
-        return realmRecordFactory.convertFrom(realm);
-    }
-
-    public RealmRecord joinRealm(RealmCredential realmCredential,User user) throws ApiException {
-        Realm realm = getRealmFromRepo(realmCredential.getId());
-        if (realm.getPassword()!=null && !encoder.matches(realmCredential.getPassword(),realm.getPassword())) {
-            throw new ApiException(ApiExceptionResponse.PASSWORD_INCORRECT);
-        }
-        realm.getParticipants().add(user.getPlayer());
-        user.getPlayer().setCurRealm(realm);
-        realmRepository.save(realm);
-        userRepository.save(user);
-        return realmRecordFactory.convertFrom(realm);
-    }
-
-    public RealmRecord realmSync(User user) throws ApiException {
-        Realm curRealm = user.getPlayer().getCurRealm();
-        if(curRealm == null ){
-            throw new ApiException(ApiExceptionResponse.REALM_NOT_FOUND);
-        }
-        return realmRecordFactory.convertFrom(user.getPlayer().getCurRealm());
-    }
-
-    public void leaveRealm(User user) {
-        Realm realm = user.getPlayer().getCurRealm();
-        realm.getParticipants().remove(user.getPlayer());
-        user.getPlayer().setCurRealm(null);
-        realmRepository.save(realm);
-        userRepository.save(user);
-
+        realmRepository.save(newRealm);
+        return newRealm;
     }
 
     @NotNull

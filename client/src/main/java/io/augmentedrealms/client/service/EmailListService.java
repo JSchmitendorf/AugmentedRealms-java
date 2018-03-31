@@ -2,7 +2,7 @@ package io.augmentedrealms.client.service;
 
 import io.augmentedrealms.client.exception.ApiException;
 import io.augmentedrealms.client.exception.ApiExceptionResponse;
-import io.augmentedrealms.client.model.EmailRecord;
+import io.augmentedrealms.client.model.in.EmailRecord;
 import io.augmentedrealms.common.database.repository.EmailListRepository;
 import io.augmentedrealms.common.email.EmailTemplate;
 import org.springframework.beans.factory.annotation.Value;

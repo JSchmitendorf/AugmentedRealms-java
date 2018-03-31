@@ -1,8 +1,8 @@
 package io.augmentedrealms.client.controller;
 
 import io.augmentedrealms.client.exception.ApiException;
-import io.augmentedrealms.client.model.UserCredential;
-import io.augmentedrealms.client.model.UserRecord;
+import io.augmentedrealms.client.model.in.UserCredential;
+import io.augmentedrealms.client.model.in.NewUser;
 import io.augmentedrealms.client.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +21,13 @@ public class AuthController {
 
     @PostMapping(path = "/register")
     @ResponseStatus(value = HttpStatus.OK)
-    public void register(@Valid @RequestBody UserRecord newUser) throws ApiException {
-        userService.userRegister(newUser);
+    public void register(@Valid @RequestBody NewUser newNewUser) throws ApiException {
+        userService.userRegister(newNewUser);
     }
 
     @PostMapping(path = "/login")
-    public String login(@Valid @RequestBody UserCredential userCredential) throws ApiException {
-        return userService.userLogin(userCredential);
+    public String login(@Valid @RequestBody UserCredential userCredentialRecord) throws ApiException {
+        return userService.userLogin(userCredentialRecord);
 
     }
 }

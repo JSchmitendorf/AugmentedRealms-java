@@ -5,7 +5,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "player")
-public class Player implements Model {
+public class Player implements DBModel {
 
     @Id
     private Long id;
@@ -16,10 +16,6 @@ public class Player implements Model {
 
     @OneToMany(mappedBy = "owner",orphanRemoval = true)
     private Set<Realm> ownedRealms;
-
-    @ManyToOne
-    @JoinColumn()
-    private Realm curRealm;
 
     public Set<Realm> getOwnedRealms() {
         return ownedRealms;
@@ -37,14 +33,7 @@ public class Player implements Model {
         this.user = user;
     }
 
-    public Realm getCurRealm() {
-        return curRealm;
-    }
-
-    public void setCurRealm(Realm curRealm) {
-        this.curRealm = curRealm;
-    }
-
+    @Override
     public Long getId() {
         return id;
     }
